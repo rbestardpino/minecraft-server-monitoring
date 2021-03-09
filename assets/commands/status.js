@@ -8,10 +8,10 @@ module.exports = {
     util
       .status(PRIVATE.server_ip)
       .then((response) => {
-        message.channel.send(JSON.stringify(response));
+        message.channel.send("`" + JSON.stringify(response) + "`");
       })
       .catch((error) => {
-        console.log(error);
+        message.channel.send("Server abriendo...");
       });
   },
 };
