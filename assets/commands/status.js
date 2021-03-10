@@ -1,3 +1,5 @@
+const fs = require("fs");
+const { MessageAttachment, MessageEmbed } = require("discord.js");
 const util = require("minecraft-server-util");
 const PRIVATE = require("../../private.json");
 
@@ -8,9 +10,37 @@ module.exports = {
     util
       .status(PRIVATE.server_ip)
       .then((response) => {
-        message.channel.send("`" + JSON.stringify(response) + "`");
+        fs.writeFileSync(
+          "tmp/logo.png",
+          response.favicon.split(";base64,").pop(),
+          {
+            encoding: "base64",
+          }
+        );
+        const attachment = new MessageAttachment("tmp/logo.png", "logo.png");
+
+        const embed = new MessageEmbed()
+          .setDescription(
+            "Online: :white_check_mark: \n" +
+              "Version: `" +
+              response.version +
+              "`\n\n" +
+              "Message of the day: \n> " +
+              response.description.descriptionText +
+              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers}):\n`
+          )
+          .setColor(13832352)
+          .setTimestamp(new Date().toLocaleString())
+          .attachFiles(attachment)
+          .setThumbnail("attachment://logo.png")
+          .setImage("attachment://logo.png")
+          .setTitle(response.host)
+          .setFooter("Powered by rbestardpino.xyz");
+
+        message.channel.send({ embed });
       })
       .catch((error) => {
+        console.error(error);
         message.channel.send("Server abriendo...");
       });
   },
