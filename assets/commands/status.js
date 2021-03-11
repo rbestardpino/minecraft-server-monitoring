@@ -8,7 +8,7 @@ module.exports = {
   description: "Gives you the full status of server",
   execute(message, args) {
     util
-      .status(PRIVATE.test_server_ip)
+      .status(PRIVATE.server_ip)
       .then((response) => {
         fs.writeFileSync(
           "tmp/logo.png",
@@ -19,14 +19,16 @@ module.exports = {
         );
         const attachment = new MessageAttachment("tmp/logo.png", "logo.png");
 
-        const playersNames = response.samplePlayers.map(
-          (player) => player.name
-        );
-
         let playersString = "";
+        if (response.samplePlayers) {
+          const playersNames = response.samplePlayers.map(
+            (player) => player.name
+          );
+          playersString += ":\n";
 
-        for (const playerName of playersNames) {
-          playersString += ` - ${playerName}\n`;
+          for (const playerName of playersNames) {
+            playersString += ` - ${playerName}\n`;
+          }
         }
 
         const embed = new MessageEmbed()
@@ -37,7 +39,7 @@ module.exports = {
               "`\n\n" +
               "Message of the day: \n> " +
               response.description.descriptionText +
-              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers}):\n${playersString}`
+              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers})${playersString}`
           )
           .setColor(13832352)
           .setTimestamp(new Date().toLocaleString())
