@@ -27,7 +27,7 @@ module.exports = {
               "`\n\n" +
               "Message of the day: \n> " +
               response.description.descriptionText +
-              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers}):\n`
+              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers}):\n \`\`\`${response.samplePlayers}\`\`\``
           )
           .setColor(13832352)
           .setTimestamp(new Date().toLocaleString())
@@ -37,11 +37,19 @@ module.exports = {
           .setTitle(response.host)
           .setFooter("Powered by rbestardpino.xyz");
 
-        message.channel.send({ embed });
+        message.reply(" ", { embed });
       })
       .catch((error) => {
         console.error(error);
-        message.channel.send("Server abriendo...");
+        const embed = new MessageEmbed()
+          .setDescription("Online: :x: \n" + "Version: `unknown`\n\n")
+          .setColor(13832352)
+          .setTimestamp(new Date().toLocaleString())
+          .setThumbnail("https://i.imgur.com/kB8k3RY.jpg")
+          .setTitle(PRIVATE.test_server_ip)
+          .setFooter("Powered by rbestardpino.xyz");
+
+        message.reply(" ", { embed });
       });
   },
 };
