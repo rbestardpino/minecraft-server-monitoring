@@ -27,7 +27,9 @@ module.exports = {
               "`\n\n" +
               "Message of the day: \n> " +
               response.description.descriptionText +
-              `\n\nPlayers (${response.onlinePlayers}/${response.maxPlayers}):\n \`\`\`${response.samplePlayers}\`\`\``
+              `\n\nPlayers (${response.onlinePlayers}/${
+                response.maxPlayers
+              }):\n \`\`\`${JSON.stringify(response.samplePlayers)}\`\`\``
           )
           .setColor(13832352)
           .setTimestamp(new Date().toLocaleString())
@@ -46,7 +48,7 @@ module.exports = {
           .setColor(13832352)
           .setTimestamp(new Date().toLocaleString())
           .setThumbnail("https://i.imgur.com/kB8k3RY.jpg")
-          .setTitle(PRIVATE.test_server_ip)
+          .setTitle(PRIVATE.server_ip)
           .setFooter("Powered by rbestardpino.xyz");
 
         message.reply(" ", { embed });
